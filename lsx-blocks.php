@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: LSX Blocks Plugin
+ * Plugin Name: LSX Blocks
  * Plugin URI: https://github.com/ahmadawais/create-guten-block/
  * Description: LSX Blocks is a Gutenberg plugin created via create-guten-block.
  * Author: lightspeed
@@ -20,4 +20,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Block Initializer.
  */
-require_once plugin_dir_path( __FILE__ ) . 'src/init.php';
+function lsx_blocks_loader() {
+	require_once plugin_dir_path( __FILE__ ) . 'src/init.php';
+}
+add_action( 'plugins_loaded', 'lsx_blocks_loader' );
+
+/**
+ * Load the plugin textdomain
+ */
+function lsx_blocks_init() {
+	load_plugin_textdomain( 'lsx-blocks', false, basename( dirname( __FILE__ ) ) . '/languages' );
+}
+add_action( 'init', 'lsx_blocks_init' );

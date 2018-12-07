@@ -20,17 +20,26 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 1.0.0
  */
-function my_block_cgb_block_assets() {
-	// Styles.
-	wp_enqueue_style(
-		'lsx-blocks-style-css', // Handle.
-		plugins_url( 'dist/blocks.style.build.css', dirname( __FILE__ ) ), // Block style CSS.
-		array( 'wp-blocks' ) // Dependency to include the CSS after it.
-	);
-} // End function my_block_cgb_block_assets().
+/**
+ * Enqueue assets for frontend and backend
+ *
+ * @since 1.0.0
+ */
+function lxs_blocks_block_assets() {
 
-// Hook: Frontend assets.
-add_action( 'enqueue_block_assets', 'my_block_cgb_block_assets' );
+	$postfix = ( SCRIPT_DEBUG == true ) ? '' : '.min';
+
+	// Load the compiled styles
+	wp_enqueue_style(
+		'lsx-blocks-style-css',
+		plugins_url( 'dist/blocks.style.build.css', dirname( __FILE__ ) ),
+		array(),
+		filemtime( plugin_dir_path( __FILE__ ) . 'blocks.style.build.css' )
+	);
+
+}
+add_action( 'init', 'lxs_blocks_block_assets' );
+
 
 /**
  * Enqueue Gutenberg block assets for backend editor.
@@ -54,9 +63,9 @@ function my_block_cgb_editor_assets() {
 	// Styles.
 	wp_enqueue_style(
 		'lsx-blocks-block-editor-css', // Handle.
-		plugins_url( 'dist/blocks.editor.build.css', dirname( __FILE__ ) ), // Block editor CSS.
-		array( 'wp-edit-blocks' ) // Dependency to include the CSS after it.
-		// filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.editor.build.css' ) // Version: filemtime — Gets file modification time.
+		plugins_url( '/dist/blocks.editor.build.css', dirname( __FILE__ ) ), // Block editor CSS.
+		array( 'wp-edit-blocks' ), // Dependency to include the CSS after it.
+		filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.editor.build.css' ) // Version: filemtime — Gets file modification time.
 	);
 } // End function my_block_cgb_editor_assets().
 
